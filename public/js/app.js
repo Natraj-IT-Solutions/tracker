@@ -263,7 +263,7 @@
   async function openHistory() {
     UI.toast('Loading history...', 'info');
     const stats = await Storage.getStats(currentProfile.id);
-    UI.renderHistory(currentAccount, currentProfile, stats.history, stats.leaves);
+    UI.renderHistory(stats.history);
     UI.showScreen('#screenHistory');
   }
 
