@@ -50,7 +50,7 @@ const getDB = async () => {
       if (res.rows.length === 0) {
         const initial = { 
           users: [{
-            id: 'acc-1', email: 'Ghisingrishav@gmail.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
+            id: 'acc-1', email: 'info@azurabooking.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
             profiles: [],
             createdAt: new Date().toISOString()
           }], shifts: [], activeShifts: {}, leaves: [] 
@@ -88,7 +88,7 @@ const getDB = async () => {
     const initial = { 
       users: [
         {
-          id: 'acc-1', email: 'Ghisingrishav@gmail.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
+          id: 'acc-1', email: 'info@azurabooking.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
           profiles: [],
           createdAt: new Date().toISOString()
         }
