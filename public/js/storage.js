@@ -132,6 +132,26 @@ const Storage = (() => {
       ...periodLeaves.map(l => Clock.formatDate(l.date))
     ]);
 
+    // Calculate missed workdays so far (excluding Saturdays and Leave Days)
+    let missedWorkdays = 0;
+    let checkDate = new Date(startOfPeriod);
+    const workedDaysSet = new Set(periodShifts.map(s => Clock.formatDate(s.clockIn)));
+    const leaveDaysSet = new Set(periodLeaves.map(l => Clock.formatDate(l.date)));
+
+    while (checkDate < now) {
+      const formatted = Clock.formatDate(checkDate);
+      const isSaturday = checkDate.getDay() === 6; // Saturday
+      const isToday = formatted === Clock.formatDate(now);
+      
+      // We only penalize for PAST normal days (Sun-Fri) that were missed
+      if (!isSaturday && !isToday) {
+        if (!workedDaysSet.has(formatted) && !leaveDaysSet.has(formatted)) {
+          missedWorkdays++;
+        }
+      }
+      checkDate.setDate(checkDate.getDate() + 1);
+    }
+
     return {
       today: calcHours(todayShifts),
       week: calcHours(weekShifts),
@@ -139,6 +159,7 @@ const Storage = (() => {
       totalShifts: periodShifts.length,
       workingDays: uniqueDays.size,
       leaveCount: periodLeaves.length,
+      missedWorkdays: missedWorkdays,
       hasLeaveThisMonth: periodLeaves.length > 0,
       leaves: leaves,
       history: shifts.sort((a, b) => new Date(b.clockOut) - new Date(a.clockOut))

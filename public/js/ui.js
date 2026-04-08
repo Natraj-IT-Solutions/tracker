@@ -219,15 +219,20 @@ const UI = (() => {
     const baseSalary = 30000;
     const workingDays = stats.workingDays;
     
-    // As per request: No percentage cuts for leaves or anything else.
-    const cutoffValue = 0;
-    const takeHome = baseSalary;
+    // Penalize only for missed normal days (Sun-Fri) not covered by Leave
+    const cutoffValue = stats.missedWorkdays * (baseSalary * 0.05);
+    const takeHome = baseSalary - cutoffValue;
 
     els.statWorkingDays.textContent = `${workingDays} Days`;
     els.statLeaveDays.textContent = `${stats.leaveCount} Days`;
     
-    els.statCutoff.textContent = `None`;
-    els.statCutoff.style.color = 'var(--success)';
+    if (stats.missedWorkdays > 0) {
+      els.statCutoff.textContent = `-Rs. ${cutoffValue.toLocaleString()} (${stats.missedWorkdays} Days Missed)`;
+      els.statCutoff.style.color = 'var(--danger)';
+    } else {
+      els.statCutoff.textContent = `None (Good Attendance!)`;
+      els.statCutoff.style.color = 'var(--success)';
+    }
     
     els.statTakeHome.textContent = `Rs. ${takeHome.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
     
