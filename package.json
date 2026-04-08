@@ -1,0 +1,26 @@
+{
+  "name": "azura-worker-tracker",
+  "version": "1.0.0",
+  "description": "Clock in/out tracker for Azura booking workers with SMTP email notifications",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "tracker",
+    "clock",
+    "azura"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
