@@ -51,7 +51,7 @@ const getDB = async () => {
         const initial = { 
           users: [{
             id: 'acc-1', email: 'Ghisingrishav@gmail.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
-            profiles: [{ id: 'prof-1', name: 'Admin', role: 'Team Leader', approved: true }],
+            profiles: [],
             createdAt: new Date().toISOString()
           }], shifts: [], activeShifts: {}, leaves: [] 
         };
@@ -74,7 +74,7 @@ const getDB = async () => {
       users: [
         {
           id: 'acc-1', email: 'Ghisingrishav@gmail.com', password: process.env.ADMIN_PASSWORD || 'cat12345',
-          profiles: [{ id: 'prof-1', name: 'Admin', role: 'Team Leader', approved: true }],
+          profiles: [],
           createdAt: new Date().toISOString()
         }
       ], shifts: [], activeShifts: {}, leaves: [] 
@@ -476,8 +476,9 @@ app.get('/api/admin/clear-dummy-data', async (req, res) => {
   db.shifts = [];
   db.activeShifts = {};
   db.leaves = [];
+  db.users.forEach(u => u.profiles = []);
   await saveDB(db);
-  res.json({ success: true, message: 'All dummy shifts and leaves cleared successfully! You can close this page and refresh your app.' });
+  res.json({ success: true, message: 'All dummy profiles, shifts, and leaves cleared successfully! You can close this page and refresh your app.' });
 });
 
 // ─── Catch-all: serve index.html for SPA ─────────────────────
