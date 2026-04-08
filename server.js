@@ -442,18 +442,21 @@ app.post('/api/send-email', async (req, res) => {
       return res.status(400).json({ error: 'Invalid type. Must be clock-in, clock-out or leave' });
     }
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Azura Tracker" <${process.env.SMTP_USER}>`,
       to: process.env.ADMIN_EMAIL,
       subject: emailContent.subject,
       html: emailContent.html,
     });
 
-    console.log(`📧 Email sent: ${type} — ${worker}`);
-    res.json({ success: true, message: 'Email sent successfully' });
+    res.status(200).json({ success: true, messageId: info.messageId });
   } catch (error) {
-    console.error('❌ Email error:', error.message);
-    res.status(500).json({ error: 'Failed to send email', details: error.message });
+    console.error('Email send error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'SMTP Error: ' + error.message,
+      tip: 'Check your Vercel Environment Variables (SMTP_USER, SMTP_PASS) and ensure you are using a Gmail App Password.'
+    });
   }
 });
 

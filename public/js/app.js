@@ -143,7 +143,7 @@
     UI.toast(`${currentProfile.name} clocked in!`, 'success');
 
     Email.sendClockIn(currentProfile.name, now).then(res => {
-      if (!res.success) UI.toast('Email failed — shift recorded locally', 'info');
+      if (!res.success) UI.toast(`Email Error: ${res.error || 'Check Vercel Config'}`, 'error');
     });
   }
 
@@ -197,6 +197,9 @@
 
       // Async email (don't block UI refresh)
       Email.sendClockOut(currentProfile.name, activeShift.clockIn, clockOutTime, duration, formData)
+        .then(res => {
+          if (!res.success) UI.toast(`Email Error: ${res.error || 'Check Vercel Config'}`, 'error');
+        })
         .catch(err => console.error('Email delay/failure:', err));
 
     } catch (err) {
@@ -234,7 +237,7 @@
       const activeShift = Storage.getActiveShift(currentProfile.id);
       UI.updateDashboard(currentProfile, !!activeShift, activeShift);
     } catch (err) {
-      UI.toast('Record saved locally', 'info');
+      UI.toast(`Email Error: ${err.message}`, 'error');
       UI.hideLeaveModal();
     } finally {
       UI.els.btnSubmitLeave.disabled = false;
