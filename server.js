@@ -27,8 +27,9 @@ try {
 
 // Simple JSON/PG Database Utility
 const { Pool } = require('pg');
-const pool = process.env.DATABASE_URL ? new Pool({
-  connectionString: process.env.DATABASE_URL,
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+const pool = connectionString ? new Pool({
+  connectionString: connectionString,
   ssl: { rejectUnauthorized: false }
 }) : null;
 
