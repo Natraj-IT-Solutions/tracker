@@ -162,6 +162,9 @@ const UI = (() => {
     let html = '';
     
     profiles.forEach(p => {
+      // Iron-clad Filter: Never render the dummy Admin profile even if cached in local storage
+      if (p.id === 'prof-1' || p.name === 'Admin') return;
+
       const initials = p.name.split(' ').map((n) => n[0]).join('').toUpperCase();
       const active = Storage.getActiveShift(p.id);
       const statusClass = active ? 'worker-card__status--active' : 'worker-card__status--inactive';
