@@ -16,10 +16,13 @@ process.on('uncaughtException', (err) => {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'data', 'db.json');
-
-// Ensure data directory exists
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-  fs.mkdirSync(path.join(__dirname, 'data'));
+// Ensure data directory exists (wrapped in try-catch for Vercel VFS)
+try {
+  if (!fs.existsSync(path.join(__dirname, 'data'))) {
+    fs.mkdirSync(path.join(__dirname, 'data'));
+  }
+} catch (err) {
+  console.log('Skipping data directory creation (read-only environment like Vercel).');
 }
 
 // Simple JSON/PG Database Utility
@@ -480,3 +483,6 @@ app.listen(PORT, () => {
   ╚══════════════════════════════════════════╝
   `);
 });
+
+// Required for Vercel Serverless Functions
+module.exports = app;
