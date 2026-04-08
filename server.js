@@ -470,6 +470,16 @@ app.post('/api/leaves', async (req, res) => {
   }
 });
 
+// ─── Utility: Clear Dummy Data ───────────────────────────────
+app.get('/api/admin/clear-dummy-data', async (req, res) => {
+  const db = await getDB();
+  db.shifts = [];
+  db.activeShifts = {};
+  db.leaves = [];
+  await saveDB(db);
+  res.json({ success: true, message: 'All dummy shifts and leaves cleared successfully! You can close this page and refresh your app.' });
+});
+
 // ─── Catch-all: serve index.html for SPA ─────────────────────
 // Place this AFTER all API routes!
 app.get('*', async (req, res) => {

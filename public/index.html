@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css" />
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
@@ -384,7 +386,7 @@
         <form id="formLeave" class="form">
           <div class="form-group">
             <label class="form-label" for="leaveDate">Date of Leave <span class="required">*</span></label>
-            <input type="date" class="form-input" id="leaveDate" required />
+            <input type="text" class="form-input" id="leaveDate" required placeholder="Select a date" />
           </div>
           <div class="form-group">
             <label class="form-label" for="leaveReason">Reason (Optional)</label>
@@ -398,6 +400,7 @@
     <div class="toast-container" id="toastContainer"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="/js/config.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/storage.js"></script>

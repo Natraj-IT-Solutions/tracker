@@ -267,7 +267,13 @@ const UI = (() => {
   function showProfileModal() { els.modalAddProfile.classList.add('is-visible'); }
   function hideProfileModal() { els.modalAddProfile.classList.remove('is-visible'); els.formAddProfile.reset(); }
 
-  function showLeaveModal() { els.modalLeave.classList.add('is-visible'); }
+  let fpInstance = null;
+  function showLeaveModal() { 
+    els.modalLeave.classList.add('is-visible'); 
+    if(!fpInstance && window.flatpickr) {
+      fpInstance = flatpickr(els.leaveDate, { minDate: "today", dateFormat: "m/d/Y" });
+    }
+  }
   function hideLeaveModal() { els.modalLeave.classList.remove('is-visible'); els.formLeave.reset(); }
 
   let currentRating = 0;
