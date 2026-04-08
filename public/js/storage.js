@@ -99,6 +99,18 @@ const Storage = (() => {
     const shifts = await getShiftsForUser(profileId);
     const leaves = await getLeavesForUser(profileId);
     const now = new Date();
+    
+    // Period Cycle: Starts on the 29th of the previous month and ends on the 28th of this month.
+    // If today is > 28, the "current period" started on the 29th of THIS month.
+    // If today is <= 28, the "current period" started on the 29th of PREVIOUS month.
+    let startOfPeriod;
+    if (now.getDate() > 28) {
+      startOfPeriod = new Date(now.getFullYear(), now.getMonth(), 29, 0, 0, 0, 0);
+    } else {
+      startOfPeriod = new Date(now.getFullYear(), now.getMonth() - 1, 29, 0, 0, 0, 0);
+    }
+    const periodTimestamp = startOfPeriod.getTime();
+
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
     
     const tempDate = new Date(now);
@@ -106,29 +118,28 @@ const Storage = (() => {
     const diff = tempDate.getDate() - day + (day === 0 ? -6 : 1);
     const startOfWeek = new Date(tempDate.setDate(diff)).setHours(0,0,0,0);
 
-    const todayShifts = shifts.filter(s => new Date(s.clockOut).getTime() >= startOfToday);
-    const weekShifts = shifts.filter(s => new Date(s.clockOut).getTime() >= startOfWeek);
+    // Filter shifts and leaves strictly to the current period (29th -> 28th)
+    const periodShifts = shifts.filter(s => new Date(s.clockOut).getTime() >= periodTimestamp);
+    const periodLeaves = leaves.filter(l => new Date(l.date).getTime() >= periodTimestamp);
+
+    const todayShifts = periodShifts.filter(s => new Date(s.clockOut).getTime() >= startOfToday);
+    const weekShifts = periodShifts.filter(s => new Date(s.clockOut).getTime() >= startOfWeek);
 
     const calcHours = (arr) => arr.reduce((acc, s) => acc + (s.duration || 0), 0);
 
-    const monthLeaves = leaves.filter(l => {
-      const d = new Date(l.date);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    });
-
     const uniqueDays = new Set([
-      ...shifts.map(s => Clock.formatDate(s.clockIn)),
-      ...leaves.map(l => Clock.formatDate(l.date))
+      ...periodShifts.map(s => Clock.formatDate(s.clockIn)),
+      ...periodLeaves.map(l => Clock.formatDate(l.date))
     ]);
 
     return {
       today: calcHours(todayShifts),
       week: calcHours(weekShifts),
-      totalHours: calcHours(shifts),
-      totalShifts: shifts.length,
+      totalHours: calcHours(periodShifts),
+      totalShifts: periodShifts.length,
       workingDays: uniqueDays.size,
-      leaveCount: monthLeaves.length,
-      hasLeaveThisMonth: monthLeaves.length > 0,
+      leaveCount: periodLeaves.length,
+      hasLeaveThisMonth: periodLeaves.length > 0,
       leaves: leaves,
       history: shifts.sort((a, b) => new Date(b.clockOut) - new Date(a.clockOut))
     };

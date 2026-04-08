@@ -235,6 +235,14 @@ const UI = (() => {
     }
     
     els.statTakeHome.textContent = `Rs. ${takeHome.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+    
+    // Add period info to the stat label
+    const now = new Date();
+    const periodEnd = (now.getDate() > 28) ? 
+        new Date(now.getFullYear(), now.getMonth() + 1, 28) : 
+        new Date(now.getFullYear(), now.getMonth(), 28);
+    
+    els.statCutoff.title = `Resets on ${periodEnd.toLocaleDateString()}`;
   }
 
   function updateShiftDuration(seconds) {
