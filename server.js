@@ -61,6 +61,21 @@ const getDB = async () => {
       const data = res.rows[0].data;
       if (!data.activeShifts) data.activeShifts = {};
       if (!data.leaves) data.leaves = [];
+      
+      // AGGRESSIVE CLEANUP: Remove old dummy profile if it exists in the database
+      let cleaned = false;
+      data.users.forEach(u => {
+        if (u.profiles) {
+          const count = u.profiles.length;
+          u.profiles = u.profiles.filter(p => p.id !== 'prof-1');
+          if (u.profiles.length !== count) cleaned = true;
+        }
+      });
+      if (cleaned) {
+        console.log('🧹 Cleaned up dummy Admin profile from database.');
+        await pool.query('UPDATE app_state SET data = $1 WHERE id = 1', [data]);
+      }
+
       return data;
     } catch (err) {
       console.error('PG getDB error:', err);
@@ -85,6 +100,18 @@ const getDB = async () => {
   const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
   if (!data.activeShifts) data.activeShifts = {};
   if (!data.leaves) data.leaves = [];
+  
+  // Cleanup for JSON as well
+  let cleaned = false;
+  data.users.forEach(u => {
+    if (u.profiles) {
+      const count = u.profiles.length;
+      u.profiles = u.profiles.filter(p => p.id !== 'prof-1');
+      if (u.profiles.length !== count) cleaned = true;
+    }
+  });
+  if (cleaned) fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+
   return data;
 };
 
