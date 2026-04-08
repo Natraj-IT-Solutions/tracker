@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -485,5 +486,12 @@ app.listen(PORT, () => {
   `);
 });
 
+
+app.use((err, req, res, next) => {
+  console.error('API Error:', err);
+  res.status(500).json({ error: err.message || 'Internal API Error' });
+});
+
 // Required for Vercel Serverless Functions
+
 module.exports = app;
