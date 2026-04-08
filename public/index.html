@@ -377,6 +377,7 @@
     </div>
 
     <!-- ═══ MODAL: Leave Day Request ════════════════════════════ -->
+    <!-- ═══ MODAL: Leave Day Request ════════════════════════════ -->
     <div class="modal-overlay" id="modalLeave">
       <div class="modal modal--small">
         <div class="modal__header">
@@ -394,6 +395,50 @@
           </div>
           <button type="submit" class="btn-submit" id="btnSubmitLeave">Submit &amp; Send Email</button>
         </form>
+      </div>
+    </div>
+
+    <!-- ═══ MODAL: Onboarding / How it Works ═══════════════ -->
+    <div class="modal-overlay" id="modalOnboarding">
+      <div class="modal modal--medium onboarding-card">
+        <div class="onboarding-card__head">
+          <div class="onboarding-badge">Handoff Guide</div>
+          <h2 class="onboarding-title">Welcome to Azura Tracker</h2>
+          <p class="onboarding-text">Hello! Here is a simple guide on how our tracking system works.</p>
+        </div>
+
+        <div class="rules-list">
+          <div class="rule-item">
+            <div class="rule-icon">🕒</div>
+            <div class="rule-content">
+              <strong>Daily Attendance</strong>
+              <p>Clock in when you start and clock out when you finish. Simple!</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-icon">📅</div>
+            <div class="rule-content">
+              <strong>Working Cycle</strong>
+              <p>The payroll cycle resets every <strong>28th of the month</strong>. New records start from the 29th.</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-icon">🛡️</div>
+            <div class="rule-content">
+              <strong>Saturdays are Off</strong>
+              <p>Saturdays are holidays in Nepal. No work or tracking is required!</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-icon">⚠️</div>
+            <div class="rule-content">
+              <strong>Missed Days Penalty</strong>
+              <p>Sun-Fri are mandatory. Missing a day without a Leave Request results in a <strong>5% cut</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary onboarding-btn" id="btnCloseOnboarding">Got it, Let's Work!</button>
       </div>
     </div>
     <!-- ─── Toast Container ───────────────────────────────── -->

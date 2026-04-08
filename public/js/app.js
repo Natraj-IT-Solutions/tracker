@@ -26,6 +26,7 @@
     if (currentAccount) {
       await Storage.initActiveShifts(currentAccount);
       showProfileSelection();
+      checkOnboarding();
     } else {
       UI.showScreen('#screenWelcome');
     }
@@ -48,6 +49,7 @@
       await Storage.initActiveShifts(currentAccount);
       UI.toast(`Welcome, ${currentAccount.email}`, 'success');
       showProfileSelection();
+      checkOnboarding();
     } catch (err) {
       UI.toast(err.message, 'error');
     } finally {
@@ -116,6 +118,18 @@
         UI.updateShiftDuration(elapsed);
       });
     }
+  }
+
+  function checkOnboarding() {
+    const seen = sessionStorage.getItem('azura_onboarding_seen');
+    if (!seen && currentAccount) {
+      UI.showOnboarding();
+    }
+  }
+
+  function markOnboardingSeen() {
+    sessionStorage.setItem('azura_onboarding_seen', 'true');
+    UI.hideOnboarding();
   }
 
   // ─── Tracker Flows ────────────────────────────────────────
@@ -240,6 +254,8 @@
     UI.els.btnRequestLeave.addEventListener('click', () => UI.showLeaveModal());
     UI.els.btnCloseLeaveModal.addEventListener('click', () => UI.hideLeaveModal());
     UI.els.formLeave.addEventListener('submit', handleLeaveSubmit);
+
+    UI.els.btnCloseOnboarding.addEventListener('click', markOnboardingSeen);
 
     UI.els.btnHistory.addEventListener('click', openHistory);
     UI.els.btnHistoryBack.addEventListener('click', () => UI.showScreen('#screenDashboard'));

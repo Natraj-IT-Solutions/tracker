@@ -81,6 +81,9 @@ const UI = (() => {
     leaveDate: $('#leaveDate'),
     btnSubmitLeave: $('#btnSubmitLeave'),
 
+    modalOnboarding: $('#modalOnboarding'),
+    btnCloseOnboarding: $('#btnCloseOnboarding'),
+
     toastContainer: $('#toastContainer'),
     selectLiveClock: $('#selectLiveClock'),
     particleCanvas: $('#particleCanvas'),
@@ -284,6 +287,9 @@ const UI = (() => {
   }
   function hideLeaveModal() { els.modalLeave.classList.remove('is-visible'); els.formLeave.reset(); }
 
+  function showOnboarding() { els.modalOnboarding.classList.add('is-visible'); }
+  function hideOnboarding() { els.modalOnboarding.classList.remove('is-visible'); }
+
   let currentRating = 0;
   function initStarRating() {
     els.starRating.querySelectorAll('.star').forEach(star => {
@@ -360,7 +366,7 @@ const UI = (() => {
     els, initParticles, showScreen, startSelectClock, 
     renderWorkerGrid, updateDashboard, updateShiftDuration,
     showClockOutModal, hideClockOutModal, showProfileModal, hideProfileModal,
-    showLeaveModal, hideLeaveModal,
+    showLeaveModal, hideLeaveModal, showOnboarding, hideOnboarding,
     initStarRating, getRating,
     getFormData, renderHistory, toast
   };
