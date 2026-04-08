@@ -219,20 +219,15 @@ const UI = (() => {
     const baseSalary = 30000;
     const workingDays = stats.workingDays;
     
-    // IF leave is taken this month, 5% cut-off is 0 as per user request
-    const cutoffValue = stats.hasLeaveThisMonth ? 0 : (baseSalary * 0.05);
-    const takeHome = baseSalary - cutoffValue;
+    // As per request: No percentage cuts for leaves or anything else.
+    const cutoffValue = 0;
+    const takeHome = baseSalary;
 
     els.statWorkingDays.textContent = `${workingDays} Days`;
     els.statLeaveDays.textContent = `${stats.leaveCount} Days`;
     
-    if (stats.hasLeaveThisMonth) {
-      els.statCutoff.textContent = `Waived (Leave)`;
-      els.statCutoff.style.color = 'var(--success)';
-    } else {
-      els.statCutoff.textContent = `-Rs. ${cutoffValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-      els.statCutoff.style.color = 'var(--danger)';
-    }
+    els.statCutoff.textContent = `None`;
+    els.statCutoff.style.color = 'var(--success)';
     
     els.statTakeHome.textContent = `Rs. ${takeHome.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
     
